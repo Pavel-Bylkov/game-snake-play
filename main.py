@@ -3,6 +3,8 @@
 import play
 import sys
 
+# Дз добавить картинку или надпись ГеймОвер и подключить звуковое сопровождение
+
 # Base setings
 play.set_backdrop('black')
 LINE_COLOR = (253, 203, 0)
@@ -97,7 +99,8 @@ def do_key():
     if play.key_is_pressed('left', 'a', 'ф'):
         ball.angle = 180"""
 
-@play.when_key_pressed('up', 'w', 'down', 's', 'right', 'd', 'left', 'a') # if either the space key or enter key are pressed...
+# if either the space key or enter key are pressed...
+@play.when_key_pressed('up', 'w', 'down', 's', 'right', 'd', 'left', 'a')
 async def do_key(key):
     if key == 'up' or key == 'w':
         ball.angle = 90
