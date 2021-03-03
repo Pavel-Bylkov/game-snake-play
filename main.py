@@ -1,7 +1,8 @@
 # https://github.com/replit/play - используемая библиотека
-# pip3 install replit-зшзplay - сразу устанавливает и библиотеку play и pygame
+# pip3 install replit-play - сразу устанавливает и библиотеку play и pygame
 import play
 import sys
+import pygame as pg
 
 # Дз добавить картинку или надпись ГеймОвер и подключить звуковое сопровождение
 
@@ -25,6 +26,9 @@ speed = 0.5  # время обновления экрана
 score_count = 0
 lines = []
 body = [ball]
+
+sound_eat = pg.mixer.Sound('Bite.wav')
+sound_eat.set_volume(0.5)
 
 def random_pos(sprite):
     x = play.random_number(-12, 12) * 30
@@ -57,6 +61,7 @@ def done_goal():
     score.words = "%0.3d" % score_count
     # переместить бокс в новое место
     random_pos(box)
+    sound_eat.play()
 
 def next_step_body(pos_ball):
     for i in range(len(body) - 1, 1, -1):
