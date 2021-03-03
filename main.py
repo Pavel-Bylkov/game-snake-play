@@ -30,6 +30,9 @@ body = [ball]
 sound_eat = pg.mixer.Sound('Bite.wav')
 sound_eat.set_volume(0.5)
 
+pg.mixer.music.load('fon.mp3')
+pg.mixer.music.set_volume(0.5)
+
 def random_pos(sprite):
     x = play.random_number(-12, 12) * 30
     y = play.random_number(-10, 7) * 30 + 25
@@ -116,5 +119,11 @@ async def do_key(key):
     if key == 'left' or key == 'a':
         ball.angle = 180
     await play.timer(seconds=0.1)
+
+# для повтора фоновой мелодии
+@play.repeat_forever
+async def music_play():
+    pg.mixer.music.play()
+    await play.timer(seconds=194)
 
 play.start_program()
