@@ -1,9 +1,11 @@
 # https://github.com/replit/play - используемая библиотека
 # pip3 install replit-play - сразу устанавливает и библиотеку play и pygame
-import play
+
 import sys
 import pygame as pg
 import time
+
+import play
 
 # Дз добавить картинку или надпись ГеймОвер и подключить звуковое сопровождение
 
@@ -19,13 +21,13 @@ BRD_BOTTOM = -290
 label1 = play.new_text(words='SCORE:', color='white', x=280, y=270, font_size=30)
 score = play.new_text(words='000', color='white', x=350, y=270, font_size=40)
 label2 = play.new_text(words='TIME:', color='white', x=100, y=270, font_size=30)
-timer = play.new_text(words='00:00', color='white', x=180, y=270, font_size=40)
-#apple = play.new_image(image="Apple.png", x=-20, y=0, size=5, angle=0, transparency=100)
+timer_txt = play.new_text(words='00:00', color='white', x=180, y=270, font_size=40)
+#apple = new_image(image="Apple.png", x=-20, y=0, size=5, angle=0, transparency=100)
 box = play.new_box(color='green', x=30, y=25, width=28, height=28, border_width=0)
 ball = play.new_circle(color='red', x=0, y=-5, radius=14, border_color="blue",
                         border_width=0, transparency=100)
 # global variables
-speed = 0.5  # время обновления экрана
+speed_game = 0.5  # время обновления экрана
 score_count = 0
 lines = []
 body = [ball]
@@ -53,9 +55,6 @@ def create_space():
         line = play.new_line(color=LINE_COLOR, x=BRD_LEFT + i * 30, y=BRD_TOP, length=540,
                              angle=-90, thickness=1, x1=None, y1=None)
         lines.append(line)
-
-def game_over():
-    sys.exit(0)
 
 def done_goal():
     global score_count
@@ -97,19 +96,22 @@ async def do():
 
     if (ball.x > BRD_RIGHT or ball.x < BRD_LEFT or
         ball.y > BRD_TOP or ball.y < BRD_BOTTOM):
+        pg.mixer.music.stop()
+        gameover = play.new_image(image='gameover.jpeg', x=0, y=0, angle=0, size=100, transparency=100)
+        gameover.show()
         await play.timer(seconds=3)
-        game_over()
+        sys.exit(0)
 
     if ball.is_touching(box):
         done_goal()
 
-    await play.timer(seconds=speed)
+    await play.timer(seconds=speed_game)
 
 @play.repeat_forever
 async def timer_change():
-    global timer
+    global timer_txt
     diff_time = int(time.time() - start_time)
-    timer.words = '{:02d}:{:02d}'.format(diff_time // 60, diff_time % 60)
+    timer_txt.words = '{:02d}:{:02d}'.format(diff_time // 60, diff_time % 60)
     # Через 22 секунды перезапускаем фоновую мелодию
     if diff_time % 22 == 0:
         pg.mixer.music.play()
